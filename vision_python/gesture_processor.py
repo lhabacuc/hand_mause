@@ -21,7 +21,6 @@ class GestureProcessor:
         self.drag_min_duration = config.get("DRAG_MIN_DURATION", 0.5)
         self.send_command = command_sender
         
-        # Estado da pinça
         self.pinch_active = False
         self.pinch_start_time = 0.0
         self.dragging = False

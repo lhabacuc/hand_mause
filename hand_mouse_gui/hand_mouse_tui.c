@@ -1,121 +1,31 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include <signal.h>
+#include <unistd.h>
 #include <sys/types.h>
 
 #define CONFIG_PATH "config/hand_mouse.conf"
 
+/* ================= CONFIG STRUCT ================= */
+
 typedef struct s_config
 {
-	int   screen_width;
-	int   screen_height;
-	float pinch_threshold;
-	float smoothing;
-	float click_max_duration;
-	float drag_min_duration;
-}   t_config;
+	int		screen_width;
+	int		screen_height;
+	float	pinch_threshold;
+	float	smoothing;
+	float	click_max_duration;
+	float	drag_min_duration;
+}	t_config;
 
-static pid_t g_python_pid = 0;
+/* ================= PARAM TABLE ================= */
 
 typedef enum e_type
 {
 	T_INT,
 	T_FLOAT
 }	t_type;
-/* Load configuration from file */
-static t_config load_config(void)
-{
-	t_config cfg = {1920, 1080, 0.04f, 0.5f, 0.7f, 0.8f};
-	FILE *f = fopen(CONFIG_PATH, "r");
-	if (!f)
-		return cfg;
-
-	char line[256];
-	char key[64];
-	char value[64];
-	while (fgets(line, sizeof(line), f))
-	{
-		if (line[0] == '#' || line[0] == '\n')
-			continue;
-		if (sscanf(line, "%63[^=]=%63s", key, value) == 2)
-		{
-			if (strcmp(key, "screen_width") == 0)
-				cfg.screen_width = atoi(value);
-			else if (strcmp(key, "screen_height") == 0)
-				cfg.screen_height = atoi(value);
-			else if (strcmp(key, "pinch_threshold") == 0)
-				cfg.pinch_threshold = atof(value);
-			else if (strcmp(key, "smoothing") == 0)
-				cfg.smoothing = atof(value);
-			else if (strcmp(key, "click_max_duration") == 0)
-				cfg.click_max_duration = atof(value);
-			else if (strcmp(key, "drag_min_duration") == 0)
-				cfg.drag_min_duration = atof(value);
-		}
-	}
-	fclose(f);
-	return cfg;
-}
-
-/* Save configuration to file */
-static void save_config(t_config *cfg)
-{
-	FILE *f = fopen(CONFIG_PATH, "w");
-	if (!f)
-	{
-		perror("Failed to save config");
-		return;
-	}
-	fprintf(f, "# Hand Mouse Configuration\n");
-	fprintf(f, "screen_width=%d\n", cfg->screen_width);
-	fprintf(f, "screen_height=%d\n", cfg->screen_height);
-	fprintf(f, "pinch_threshold=%.3f\n", cfg->pinch_threshold);
-	fprintf(f, "smoothing=%.2f\n", cfg->smoothing);
-	fprintf(f, "click_max_duration=%.1f\n", cfg->click_max_duration);
-	fprintf(f, "drag_min_duration=%.1f\n", cfg->drag_min_duration);
-	fclose(f);
-}
-
-/* Start Python program */
-static void start_program(void)
-{
-	if (g_python_pid > 0)
-	{
-		printf("Program already running!\n");
-		return;
-	}
-	pid_t pid = fork();
-	if (pid == 0)
-	{
-		execlp("python3", "python3", "vision_python/socket_client.py", NULL);
-		perror("execlp failed");
-		exit(1);
-	}
-	else if (pid > 0)
-	{
-		g_python_pid = pid;
-		printf("✓ Hand Mouse started (PID: %d)\n", pid);
-	}
-	else
-	{
-		perror("fork failed");
-	}
-}
-
-/* Stop Python program */
-static void stop_program(void)
-{
-	if (g_python_pid <= 0)
-	{
-		printf("No program running!\n");
-		return;
-	}
-	kill(g_python_pid, SIGTERM);
-	printf("✓ Hand Mouse stopped (PID: %d)\n", g_python_pid);
-	g_python_pid = 0;
-}
 
 typedef struct s_param
 {
@@ -125,6 +35,91 @@ typedef struct s_param
 	const char	*fmt;
 }	t_param;
 
+/* ================= GLOBAL ================= */
+
+static pid_t	g_python_pid = 0;
+
+/* ================= CONFIG ================= */
+
+static t_config	load_config(void)
+{
+	t_config	cfg = {1920, 1080, 0.04f, 0.5f, 0.7f, 0.8f};
+	FILE		*f;
+	char		line[256];
+	char		key[64];
+	char		val[64];
+
+	f = fopen(CONFIG_PATH, "r");
+	if (!f)
+		return (cfg);
+	while (fgets(line, sizeof(line), f))
+	{
+		if (line[0] == '#' || line[0] == '\n')
+			continue ;
+		if (sscanf(line, "%63[^=]=%63s", key, val) != 2)
+			continue ;
+		if (!strcmp(key, "screen_width"))
+			cfg.screen_width = atoi(val);
+		else if (!strcmp(key, "screen_height"))
+			cfg.screen_height = atoi(val);
+		else if (!strcmp(key, "pinch_threshold"))
+			cfg.pinch_threshold = atof(val);
+		else if (!strcmp(key, "smoothing"))
+			cfg.smoothing = atof(val);
+		else if (!strcmp(key, "click_max_duration"))
+			cfg.click_max_duration = atof(val);
+		else if (!strcmp(key, "drag_min_duration"))
+			cfg.drag_min_duration = atof(val);
+	}
+	fclose(f);
+	return (cfg);
+}
+
+static void	save_config(t_config *c)
+{
+	FILE	*f;
+
+	f = fopen(CONFIG_PATH, "w");
+	if (!f)
+		return ;
+	fprintf(f, "screen_width=%d\n", c->screen_width);
+	fprintf(f, "screen_height=%d\n", c->screen_height);
+	fprintf(f, "pinch_threshold=%.3f\n", c->pinch_threshold);
+	fprintf(f, "smoothing=%.2f\n", c->smoothing);
+	fprintf(f, "click_max_duration=%.1f\n", c->click_max_duration);
+	fprintf(f, "drag_min_duration=%.1f\n", c->drag_min_duration);
+	fclose(f);
+}
+
+/* ================= PROCESS ================= */
+
+static void	start_program(void)
+{
+	pid_t	pid;
+
+	if (g_python_pid > 0)
+		return ;
+	pid = fork();
+	if (pid == 0)
+	{
+		execlp("python3", "python3",
+			"vision_python/socket_client.py", NULL);
+		exit(1);
+	}
+	if (pid > 0)
+		g_python_pid = pid;
+}
+
+static void	stop_program(void)
+{
+	if (g_python_pid > 0)
+	{
+		kill(g_python_pid, SIGTERM);
+		g_python_pid = 0;
+	}
+}
+
+/* ================= UI ================= */
 
 static void	edit_param(t_param *p)
 {
@@ -138,11 +133,9 @@ static void	edit_param(t_param *p)
 		*(int *)p->ptr = atoi(buf);
 	else
 		*(float *)p->ptr = atof(buf);
-	printf("✓ %s updated\n", p->name);
 }
 
-
-static void	display_menu(t_config *cfg, t_param *params, int count)
+static void	display_menu(t_param *params, int count)
 {
 	int	i;
 
@@ -156,8 +149,8 @@ static void	display_menu(t_config *cfg, t_param *params, int count)
 	else
 		printf("  Status: \033[31m○ STOPPED\033[0m\n\n");
 
-	printf("  [1] %s\n\n", g_python_pid > 0
-		? "Stop Program" : "Start Program");
+	printf("  [1] %s\n\n",
+		g_python_pid > 0 ? "Stop Program" : "Start Program");
 
 	printf("  Configuration:\n");
 	i = 0;
@@ -179,6 +172,7 @@ static void	display_menu(t_config *cfg, t_param *params, int count)
 	fflush(stdout);
 }
 
+/* ================= MAIN ================= */
 
 int	main(void)
 {
@@ -205,7 +199,7 @@ int	main(void)
 	count = sizeof(params) / sizeof(params[0]);
 	while (1)
 	{
-		display_menu(&cfg, params, count);
+		display_menu(params, count);
 		if (!fgets(buf, sizeof(buf), stdin))
 			break ;
 		choice = atoi(buf);

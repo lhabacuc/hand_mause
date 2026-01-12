@@ -16,7 +16,6 @@ def load_config():
                 key, value = line.split("=", 1)
                 key = key.strip()
                 value = value.strip()
-                # Tentar converter para float/int, senão string
                 try:
                     if "." in value:
                         value = float(value)

@@ -8,8 +8,7 @@ import urllib.request
 
 class HandDetector:
     """Gerencia detecção de mãos usando MediaPipe"""
-    
-    # Índices dos landmarks da mão
+
     THUMB_TIP = 4
     INDEX_TIP = 8
     WRIST = 0

@@ -6,6 +6,9 @@ handmouse
 
 .nfs*
 *.nfs*
+.nfs000000014013df0100004932
+.nfs000000014013df010000*
+hand_mouse_core/.nfs000000014013df0000004925
 
 __pycache__/
 *.py[cod]

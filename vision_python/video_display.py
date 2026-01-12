@@ -40,7 +40,7 @@ class VideoDisplay:
             
         ret, frame = self.cap.read()
         if ret:
-            frame = cv2.flip(frame, 1)  # Espelhar horizontalmente
+            frame = cv2.flip(frame, 1)
             return True, frame
         return False, None
         
@@ -53,10 +53,10 @@ class VideoDisplay:
             thumb_px: Posição do polegar em pixels
             index_px: Posição do indicador em pixels
         """
-        # Desenhar pontos
-        cv2.circle(frame, thumb_px, 10, (0, 255, 0), -1)  # Verde
-        cv2.circle(frame, index_px, 10, (255, 0, 0), -1)  # Azul
-        cv2.line(frame, thumb_px, index_px, (255, 255, 0), 2)  # Amarelo
+        
+        cv2.circle(frame, thumb_px, 10, (0, 255, 0), -1) 
+        cv2.circle(frame, index_px, 10, (255, 0, 0), -1) 
+        cv2.line(frame, thumb_px, index_px, (255, 255, 0), 2) 
         
     def draw_status(self, frame, status):
         """
@@ -66,11 +66,11 @@ class VideoDisplay:
             frame: Frame onde desenhar
             status: String com status (MOVE, PINCH, DRAG)
         """
-        color = (0, 255, 0)  # Verde
+        color = (0, 255, 0)
         if status == "PINCH":
-            color = (0, 255, 255)  # Amarelo
+            color = (0, 255, 255)
         elif status == "DRAG":
-            color = (0, 0, 255)  # Vermelho
+            color = (0, 0, 255)
             
         cv2.putText(frame, status, (10, 30), 
                    cv2.FONT_HERSHEY_SIMPLEX, 1, color, 2)

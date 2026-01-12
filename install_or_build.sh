@@ -3,6 +3,7 @@ set -e
 
 PROJECT_NAME="hand_mouse"
 BIN_NAME="hand_mouse"
+DOCKER_SCRIPT="run_hand_mouse_docker.sh"
 
 echo "=== Verificando ambiente ==="
 
@@ -29,7 +30,15 @@ check_or_install_pkg() {
             echo "2) Tentar instalar dependências via sudo"
             read -p "Escolha [1/2]: " alt
             if [ "$alt" = "1" ]; then
+                echo "Construindo imagem Docker..."
                 bash docker_build.sh
+
+                echo "#!/bin/bash" > $DOCKER_SCRIPT
+                echo "xhost +local:docker" >> $DOCKER_SCRIPT
+                echo "docker run --rm -e DISPLAY=\$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix hand_mouse" >> $DOCKER_SCRIPT
+                chmod +x $DOCKER_SCRIPT
+                echo "Script de inicialização criado: ./$DOCKER_SCRIPT"
+                echo "Você pode rodar o container com GUI usando: ./$DOCKER_SCRIPT"
                 exit 0
             elif [ "$alt" = "2" ]; then
                 sudo apt install -y python3-$PACKAGE || echo "Não foi possível instalar via sudo. Abortando."
@@ -49,6 +58,7 @@ check_or_install_pkg pyinstaller PyInstaller
 
 echo "=== Tudo pronto ==="
 
+# Pergunta se só quer compilar ou instalar tudo
 echo "Deseja apenas compilar o binário ou instalar tudo e compilar?"
 echo "1) Apenas compilar"
 echo "2) Instalar tudo e compilar"
@@ -78,10 +88,10 @@ EOF
 
 pyinstaller --onefile --name "$BIN_NAME" hand_mouse.py
 
-read -p "Deseja instalar o binário em ~/local/bin para rodar de qualquer lugar? [y/N]: " inst
+read -p "Deseja instalar o binário em /usr/local/bin para rodar de qualquer lugar? [y/N]: " inst
 if [[ "$inst" =~ ^[Yy]$ ]]; then
-    cp dist/$BIN_NAME ~/local/bin/
-    chmod +x ~/local/bin/$BIN_NAME
+    sudo cp dist/$BIN_NAME /usr/local/bin/
+    sudo chmod +x /usr/local/bin/$BIN_NAME
 fi
 
 rm -rf build __pycache__ *.spec

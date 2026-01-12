@@ -23,7 +23,7 @@ check_or_install_pkg() {
     IMPORT_NAME=$2
     if ! python3 -c "import $IMPORT_NAME" >/dev/null 2>&1; then
         echo "Biblioteca $PACKAGE não encontrada. Tentando instalar..."
-        if ! pip install $PACKAGE; then
+        if ! pip install --user $PACKAGE; then
             echo "Falha ao instalar $PACKAGE com pip."
             echo "Escolha uma alternativa:"
             echo "1) Criar imagem Docker com projeto"

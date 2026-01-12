@@ -1,0 +1,4 @@
+opencv-python>=4.8.0
+mediapipe>=0.12.0
+pyautogui>=0.9.55
+pyinstaller>=5.13.0

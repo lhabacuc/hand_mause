@@ -1,6 +1,5 @@
 CC      := gcc
 CFLAGS  := -Wall -Wextra -O2 -Ihand_mouse_core -Ihand_mouse_core/cautogui
-GTKFLAGS := $(shell pkg-config --cflags --libs gtk+-3.0)
 XFLAGS   := $(shell pkg-config --cflags --libs x11 xtst)
 
 CORE_BIN := hand_mouse_core/hand_mouse_core
@@ -23,13 +22,13 @@ $(CORE_BIN): $(CORE_SRC)
 	$(CC) $(CFLAGS) $^ -o $@ $(XFLAGS)
 
 $(GUI_BIN): $(GUI_SRC)
-	$(CC) $(CFLAGS) $^ -o $@ $(GTKFLAGS)
+	$(CC) $(CFLAGS) $^ -o $@
 
 $(CLI_BIN): $(CLI_SRC)
 	$(CC) $(CFLAGS) $^ -o $@
 
 $(NAME): $(MAIN)
-	$(CC) $(CFLAGS) $^ -o $@ $(XFLAGS) $(GTKFLAGS)
+	$(CC) $(CFLAGS) $^ -o $@ $(XFLAGS)
 
 $(PRMISSIONS):
 	chmod +x $(NAME) $(CORE_BIN) $(GUI_BIN) $(CLI_BIN)

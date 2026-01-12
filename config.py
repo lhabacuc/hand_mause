@@ -11,7 +11,7 @@ def load_config(config_path: str):
 			'smoothness': '0.5',
 			'camera_width': '640',
 			'camera_height': '480',
-			'speed_multiplier': '1.0'
+			'speed_multiplier': '1.5'
 		}
 		with open(config_path, 'w') as f:
 			config.write(f)

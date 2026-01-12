@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Hand Mouse Controller - Main Application
 Controla o mouse usando detecção de mãos via MediaPipe

@@ -1,0 +1,75 @@
+# Binaries
+hand_mouse_core/hand_mouse_core
+hand_mouse_gui/hand_mouse_gui_bin
+hand_mouse_cli/hand_mouse_cli
+handmouse
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# MediaPipe model
+*.task
+
+# Configuration backups
+config/*.conf.bak
+config/*.conf~
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+*.a
+*.la
+*.lo
+
+# Libraries
+*.lib
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Core dumps
+core
+*.core

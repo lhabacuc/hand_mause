@@ -1,0 +1,12 @@
+
+name: test_action
+
+on:
+    push:
+
+jobs:
+    hello-docker:
+        runs-on: ubuntu-latest
+        steps:
+            - name: diz
+            run: echo "Liedson testa action"

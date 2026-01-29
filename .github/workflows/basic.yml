@@ -6,7 +6,7 @@ on:
 
 jobs:
     hello-docker:
-        runs-on: ubuntu-latest
+        runs-on: bash-latest
         steps:
           - name: diz
             run: echo "Liedson testa action"

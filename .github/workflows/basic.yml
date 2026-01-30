@@ -1,12 +1,12 @@
 
-name: test_action
+# name: test_action
 
-on:
-    push:
+# on:
+#     push:
 
-jobs:
-    hello-docker:
-        runs-on: bash-latest
-        steps:
-          - name: diz
-            run: echo "Liedson testa action"
+# jobs:
+#     hello-docker:
+#         runs-on: bash-latest
+#         steps:
+#           - name: diz
+#             run: echo "Liedson testa action"

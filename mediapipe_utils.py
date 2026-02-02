@@ -15,3 +15,6 @@ def setup_mediapipe(model_path: str):
 		min_tracking_confidence=0.5
 	)
 	return HandLandmarker.create_from_options(options)
+
+def set_envarment(e):
+	return e

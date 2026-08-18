@@ -6,17 +6,12 @@ Controle do mouse usando a mão via webcam com **MediaPipe** e **Python**.
 
 ## Demonstração
 
-Confira os vídeos de demonstração do funcionamento:
+Confira abaixo o funcionamento em tempo real:
 
-### Demonstração 1
-<video src="demo/demo_video1.mp4" controls="controls" width="100%">
-  Seu navegador não suporta a reprodução direta de vídeo. Assista ou baixe aqui: [demo_video1.mp4](demo/demo_video1.mp4)
-</video>
-
-### Demonstração 2
-<video src="demo/demo_video2.mp4" controls="controls" width="100%">
-  Seu navegador não suporta a reprodução direta de vídeo. Assista ou baixe aqui: [demo_video2.mp4](demo/demo_video2.mp4)
-</video>
+| Demonstração 1 | Demonstração 2 |
+| :---: | :---: |
+| ![Demonstração 1](demo/demo_video1.gif) | ![Demonstração 2](demo/demo_video2.gif) |
+| *[Ver vídeo original (MP4)](demo/demo_video1.mp4)* | *[Ver vídeo original (MP4)](demo/demo_video2.mp4)* |
 
 ---
 

@@ -4,6 +4,22 @@ Controle do mouse usando a mão via webcam com **MediaPipe** e **Python**.
 
 ---
 
+## Demonstração
+
+Confira os vídeos de demonstração do funcionamento:
+
+### Demonstração 1
+<video src="demo/demo_video1.mp4" controls="controls" width="100%">
+  Seu navegador não suporta a reprodução direta de vídeo. Assista ou baixe aqui: [demo_video1.mp4](demo/demo_video1.mp4)
+</video>
+
+### Demonstração 2
+<video src="demo/demo_video2.mp4" controls="controls" width="100%">
+  Seu navegador não suporta a reprodução direta de vídeo. Assista ou baixe aqui: [demo_video2.mp4](demo/demo_video2.mp4)
+</video>
+
+---
+
 ## Funcionalidades
 
 * Mover cursor com o dedo indicador.
